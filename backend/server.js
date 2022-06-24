@@ -25,10 +25,10 @@ const path = require('path')
 const __dirname1 = path.resolve();
 if (process.env.NODE_ENV === 'production') {
 
-    const root = require('path').join(__dirname1, 'frontend', 'build', 'index.html')
+    const root = require('path').join('frontend', 'build')
     app.use(express.static(root));
     app.get("*", (req, res) => {
-        res.sendFile(root);
+        res.sendFile('index.html', { root });
     })
 
 } else {
