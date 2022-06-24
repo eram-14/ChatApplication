@@ -13,13 +13,30 @@ app.use(express.json()); //to accept JSON Data
 dotenv.config();
 connectDB()
 
-app.get('/', (req, res) => {
-    res.send("API is working")
-})
-
 app.use('/api/user', userRoutes)
 app.use('/api/chat', chatRoutes)
 app.use('/api/message', messageRoutes)
+
+
+// --------------------------------Deployment-----------------------------
+
+const path = require('path')
+
+const __dirname1 = path.resolve();
+if (process.env.NODE_ENV === 'production') {
+
+    const root = require('path').join(__dirname1, 'frontend', 'build')
+    app.use(express.static(root));
+    app.get("*", (req, res) => {
+        res.sendFile('index.html', { root });
+    })
+
+} else {
+    app.get('/', (req, res) => {
+        res.send("API is working")
+    })
+}
+// --------------------------------Deployment-----------------------------
 
 app.use(notFound)
 app.use(errorhandler)
@@ -47,13 +64,13 @@ io.on("connection", (socket) => {
         console.log('User Joined Room: ' + room);
     })
     socket.on('new message', (newMessageRecieved) => {
-        var chat=newMessageRecieved.chat;
+        var chat = newMessageRecieved.chat;
 
-        if(!chat.users) return console.log('chat.users not defined');
-        chat.users.forEach(user=>{
-            if(user._id==newMessageRecieved.sender._id) return;
+        if (!chat.users) return console.log('chat.users not defined');
+        chat.users.forEach(user => {
+            if (user._id == newMessageRecieved.sender._id) return;
 
-            socket.in(user._id).emit("message recieved",newMessageRecieved)
+            socket.in(user._id).emit("message recieved", newMessageRecieved)
         })
     })
     socket.on('typing', (room) => socket.in(room).emit("typing"))
