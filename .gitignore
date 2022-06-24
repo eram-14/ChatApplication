@@ -5,7 +5,8 @@
 /.pnp
 .pnp.js
 .env
-/frontend
+/frontend/build
+/frontend/node_modules
 # testing
 /coverage
 
