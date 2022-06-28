@@ -2,9 +2,9 @@
   "name": "chatapplication",
   "version": "1.0.0",
   "description": "",
-  "main": "cd frontend && npm run build && cd ../backend && index server.js",
   "scripts": {
-    "start": "nodemon backend/server.js"
+    "start": "cd frontend && npm run build && cd ../backend && index server.js",
+    "dev": "nodemon backend/server.js"
   },
   "author": "",
   "license": "ISC",
